@@ -7,29 +7,43 @@ setopt interactive_comments
 # 色を使用出来るようにする
 autoload -Uz colors
 colors
+# 日本語ファイル名を表示可能にする
+setopt print_eight_bit
+# beep を無効にする
+setopt no_beep 
 
-# プロンプト
-# 1行表示
-# PROMPT="%~ %# "
+setopt auto_cd 
+setopt auto_pushd
+
+# Command Prediction by history
+autoload predict-on
+predict-on
+
+# Set bindkey vim like
+bindkey -v
+
+# 1行表示:PROMPT="%~ %# "
 PROMPT="%{${fg[red]}%}[%n@%m]%{${reset_color}%} %~
 %# "
+
+# Load setting of respective terminal.
+[ -f ~/.zshrc.mine ] && source ~/.zshrc.mine
+
+# History
+HISTFILE=~/.zsh_history
+HISTSUZE=10000
+SAVEHIST=10000
+setopt hist_ignore_dups
+setopt share_history
 
 ########################################
 # 補完
 # 補完機能を有効にする
-autoload -Uz compinit
+autoload -U compinit
 compinit
-
-
-# 同時に起動したzshの間でヒストリを共有する
-setopt share_history
 
 ########################################
 # エイリアス
 alias la='ls -a'
 
-# 日本語ファイル名を表示可能にする
-setopt print_eight_bit
-# beep を無効にする
-setopt no_beep 
 
