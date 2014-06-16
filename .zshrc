@@ -7,6 +7,8 @@ setopt interactive_comments
 # 色を使用出来るようにする
 autoload -Uz colors
 colors
+setopt prompt_subst
+
 # 日本語ファイル名を表示可能にする
 setopt print_eight_bit
 # beep を無効にする
