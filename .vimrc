@@ -32,6 +32,12 @@ set shiftwidth=4
 
 scriptencoding cp932
 
+# 閉じカッコ
+imap { {}<LEFT>
+imap [ []<LEFT>
+imap ( ()<LEFT>
+
+
 function! ZenkakuSpace()
   highlight ZenkakuSpace cterm=underline ctermfg=darkgrey gui=underline guifg=darkgrey
   endfunction
