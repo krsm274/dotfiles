@@ -7,7 +7,8 @@ set cursorline
 " Ctrl+Vで貼付けても階段状にならないようにする
 set pastetoggle=<C-E>
 set clipboard+=unnamed
-
+set laststatus=2
+set t_Co=256
 syntax on
 
 set background=light
@@ -48,7 +49,14 @@ if has("autocmd")
 endif
 """"""""""""""""""""""""""""""
 
+" Swap semicolon and colon.
+"vnoremap : ;
+"vnoremap ; :
 
+" Setting of lightline.vim
+let g:lightline = {
+      \ 'colorscheme' : 'solarized'
+      \ }
 
 
 function! ZenkakuSpace()
