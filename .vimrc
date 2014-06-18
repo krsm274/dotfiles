@@ -32,10 +32,23 @@ set shiftwidth=4
 
 scriptencoding cp932
 
-# 閉じカッコ
+"auto closing parenthesis
 imap { {}<LEFT>
 imap [ []<LEFT>
 imap ( ()<LEFT>
+
+""""""""""""""""""""""""""""""
+" Restore cursor to file position in previous editing session
+""""""""""""""""""""""""""""""
+if has("autocmd")
+     autocmd BufReadPost *
+     \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+     \   exe "normal! g'\"" |
+     \ endif
+endif
+""""""""""""""""""""""""""""""
+
+
 
 
 function! ZenkakuSpace()
