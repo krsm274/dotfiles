@@ -91,6 +91,8 @@ NeoBundle 'Shougo/neosnippet.git'
 
 NeoBundle 'plasticboy/vim-markdown'
 
+NeoBundle 'itchyny/lightline.vim'
+
 "--------------------------------------------------------------------------
 "" neocomplcache
 let g:neocomplcache_enable_at_startup = 1
