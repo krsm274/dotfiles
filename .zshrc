@@ -5,9 +5,13 @@ export LANG=ja_JP.UTF-8
 setopt interactive_comments
 
 # 色を使用出来るようにする
-autoload -Uz colors
+autoload colors
 colors
 setopt prompt_subst
+
+if [ -n "$LS_COLORS" ]; then
+    zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+fi
 
 # 日本語ファイル名を表示可能にする
 setopt print_eight_bit
