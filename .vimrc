@@ -1,3 +1,5 @@
+scriptencoding utf-8
+set encoding=utf-8
 set nocompatible 
 set number
 set showmatch
@@ -9,6 +11,8 @@ set pastetoggle=<C-E>
 set clipboard+=unnamed
 set laststatus=2
 set t_Co=256
+set guifont=MyFont\ for\ Powerline
+
 syntax on
 
 set background=light
@@ -49,14 +53,80 @@ if has("autocmd")
 endif
 """"""""""""""""""""""""""""""
 
-" Swap semicolon and colon.
+" Swap semicolon and colon. It dosen't work....
 "vnoremap : ;
 "vnoremap ; :
 
-" Setting of lightline.vim
+
+"--------------------------------------------------------------------------
+"" Setting of lightline.vim
+
 let g:lightline = {
-      \ 'colorscheme' : 'solarized'
-      \ }
+        \ 'colorscheme': 'wombat',
+        \ 'mode_map': {'c': 'NORMAL'},
+        \ 'active': {
+        \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
+        \ },
+        \ 'component_function': {
+        \   'modified': 'MyModified',
+        \   'readonly': 'MyReadonly',
+        \   'fugitive': 'MyFugitive',
+        \   'filename': 'MyFilename',
+        \   'fileformat': 'MyFileformat',
+        \   'filetype': 'MyFiletype',
+        \   'fileencoding': 'MyFileencoding',
+        \   'mode': 'MyMode'
+        \ }
+        \ }
+
+function! MyModified()
+  return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+
+function! MyReadonly()
+  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? 'x' : ''
+endfunction
+
+function! MyFilename()
+  return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+        \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+        \  &ft == 'unite' ? unite#get_status_string() :
+        \  &ft == 'vimshell' ? vimshell#get_status_string() :
+        \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+        \ ('' != MyModified() ? ' ' . MyModified() : '')
+endfunction
+
+function! MyFugitive()
+  try
+    if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head')
+      return fugitive#head()
+    endif
+  catch
+  endtry
+  return ''
+endfunction
+
+function! MyFileformat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+
+function! MyFiletype()
+  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+endfunction
+
+function! MyFileencoding()
+  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+endfunction
+
+function! MyMode()
+  return winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
+
+" Load local setting on proxy emviroment.
+"if filereadable($HOME . '.vimrc.local')
+"  source $HOME/.vimrc.local
+"endif
+
 
 
 function! ZenkakuSpace()
@@ -73,9 +143,10 @@ if has('syntax')
     augroup END
     call ZenkakuSpace()
 endif
+"--------------------------------------------------------------------------
+"" lightline.vim
 
-
-execute pathogen#infect()
+"execute pathogen#infect()
 
 "--------------------------------------------------------------------------
 "" neobundle
@@ -98,11 +169,12 @@ if has('vim_starting')
     "finish
   endif
 
+NeoBundleCheck
 
 "Tell Neosnippet about the other snippets
 let g:neosnippet#snippets_directory='~/.vim/bundle/snipmate-snippets/snippets, ~/.vim/mysnippets'
 
-"GitHubリポジトリにあるプラグインを利用場合
+"GitHubリポジトリにあるプラグインを利用する場合
 NeoBundle 'tpope/vim-fugitive'
 
 NeoBundle 'Shougo/neosnippet-snippets'
@@ -113,6 +185,7 @@ NeoBundle 'Shougo/neosnippet.git'
 NeoBundle 'plasticboy/vim-markdown'
 
 NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'Shougo/vimproc.git' " proxy
 
 "--------------------------------------------------------------------------
 "" neocomplcache
